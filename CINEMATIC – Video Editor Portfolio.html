@@ -1,0 +1,1587 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>CINEMATIC – Independent Video Editor</title>
+    <meta
+      name="description"
+      content="Independent video editor crafting cinematic films, commercials, music videos and motion graphics in Adobe Creative Cloud."
+    />
+    <meta property="og:title" content="CINEMATIC – Independent Video Editor" />
+    <meta property="og:type" content="website" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #08090b;
+        --bg2: #101114;
+        --el: #17191e;
+        --tx: #f5f5f2;
+        --mu: #92949b;
+        --ac: #c5ff41;
+        --ln: rgba(255, 255, 255, 0.12);
+        --hd: "Space Grotesk", "Arial Narrow", Arial, sans-serif;
+        --bd: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        color-scheme: dark;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 72px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--tx);
+        font: 400 16px/1.6 var(--bd);
+        overflow-x: hidden;
+      }
+      a {
+        color: inherit;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+      }
+      :focus-visible {
+        outline: 2px solid var(--ac);
+        outline-offset: 3px;
+      }
+      .w {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 28px;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: var(--hd);
+        margin: 0;
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+      }
+      h2 {
+        font-size: clamp(34px, 6vw, 84px);
+        margin: 12px 0 20px;
+      }
+      .lb {
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--mu);
+        font-weight: 500;
+      }
+      .ac {
+        color: var(--ac);
+      }
+      section {
+        padding: 110px 0;
+        border-top: 1px solid var(--ln);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 26px;
+        border: 1px solid var(--tx);
+        background: none;
+        font: 600 13px var(--bd);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+      .btn.p {
+        background: var(--ac);
+        border-color: var(--ac);
+        color: #08090b;
+      }
+      .btn:hover {
+        background: var(--tx);
+        color: #08090b;
+        border-color: var(--tx);
+      }
+      /* nav */
+      header {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 20;
+        padding-top: env(safe-area-inset-top, 0px);
+        transition: 0.3s;
+      }
+      header.s {
+        background: rgba(8, 9, 11, 0.86);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--ln);
+      }
+      nav {
+        height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .logo {
+        font: 700 20px var(--hd);
+        letter-spacing: -0.02em;
+        text-decoration: none;
+      }
+      .nl {
+        display: flex;
+        gap: 28px;
+      }
+      .nl a {
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--mu);
+        padding: 4px 0;
+        border-bottom: 2px solid transparent;
+      }
+      .nl a:hover,
+      .nl a.on {
+        color: var(--tx);
+        border-color: var(--ac);
+      }
+      .nc {
+        padding: 10px 18px;
+        font-size: 12px;
+      }
+      #mb {
+        display: none;
+        background: none;
+        border: 1px solid var(--ln);
+        padding: 8px 14px;
+      }
+      /* hero */
+      .hero {
+        min-height: 100vh;
+        min-height: 100svh;
+        display: grid;
+        align-items: end;
+        position: relative;
+        overflow: hidden;
+        border: 0;
+        padding: 120px 0 40px;
+      }
+      .hero .bg {
+        position: absolute;
+        inset: 0;
+        left: 34%;
+      }
+      .hero .bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(
+            90deg,
+            var(--bg),
+            rgba(8, 9, 11, 0.25) 45%,
+            rgba(8, 9, 11, 0.5)
+          ),
+          linear-gradient(0deg, var(--bg), transparent 40%);
+      }
+      .hero .w {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+      }
+      .hero h1 {
+        font-size: clamp(46px, 9.2vw, 138px);
+        margin: 22px 0;
+      }
+      .hero p {
+        max-width: 46ch;
+        color: #c9cbd1;
+        font-size: 18px;
+        margin: 0 0 30px;
+      }
+      .row {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .vl {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg) translateY(50%);
+        z-index: 3;
+      }
+      .av {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .av i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--ac);
+      }
+      .sc {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 56px;
+        padding-top: 16px;
+        border-top: 1px solid var(--ln);
+      }
+      .grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        mix-blend-mode: overlay;
+        opacity: 0.3;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+      .scn {
+        position: absolute;
+        inset: 0;
+      }
+      .scn svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      /* work */
+      .fl {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 8px 0 36px;
+      }
+      .fl button {
+        background: none;
+        border: 1px solid var(--ln);
+        padding: 8px 16px;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--mu);
+      }
+      .fl button[aria-pressed="true"] {
+        background: var(--ac);
+        color: #08090b;
+        border-color: var(--ac);
+      }
+      .gr {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 28px 20px;
+      }
+      .pj {
+        grid-column: span 4;
+        background: none;
+        border: 0;
+        padding: 0;
+        text-align: left;
+        display: block;
+      }
+      .pj:nth-child(6n + 1) {
+        grid-column: span 8;
+      }
+      .pj:nth-child(6n + 4) {
+        grid-column: span 7;
+      }
+      .pj:nth-child(6n + 5) {
+        grid-column: span 5;
+      }
+      .pj.hid {
+        display: none;
+      }
+      .th {
+        position: relative;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        background: var(--el);
+      }
+      .pj:nth-child(6n + 1) .th {
+        aspect-ratio: 16/8;
+      }
+      .th .scn {
+        transition: transform 0.7s;
+      }
+      .pj:hover .th .scn,
+      .pj:focus-visible .th .scn {
+        transform: scale(1.06);
+      }
+      .th .gl {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background: radial-gradient(
+          240px circle at var(--x, 50%) var(--y, 50%),
+          rgba(197, 255, 65, 0.22),
+          transparent 60%
+        );
+        opacity: 0;
+        transition: 0.3s;
+      }
+      .pj:hover .gl {
+        opacity: 1;
+      }
+      .tm {
+        position: absolute;
+        left: 12px;
+        bottom: 10px;
+        z-index: 3;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+      }
+      .demo {
+        position: absolute;
+        right: 12px;
+        top: 10px;
+        z-index: 3;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        background: rgba(8, 9, 11, 0.7);
+        padding: 2px 8px;
+        border: 1px solid var(--ln);
+      }
+      .pj h3 {
+        font-size: clamp(22px, 2.4vw, 34px);
+        margin: 14px 0 6px;
+        transition:
+          transform 0.3s,
+          color 0.3s;
+      }
+      .pj:hover h3 {
+        color: var(--ac);
+        transform: translateX(8px);
+      }
+      .meta {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        color: var(--mu);
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      /* process */
+      .ps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        margin-top: 48px;
+      }
+      .ps div {
+        padding: 28px 24px 0 0;
+        border-top: 1px solid var(--ln);
+        position: relative;
+      }
+      .ps div::before {
+        content: "";
+        position: absolute;
+        top: -4px;
+        left: 0;
+        width: 7px;
+        height: 7px;
+        background: var(--ac);
+      }
+      .ps b {
+        font: 700 14px var(--hd);
+        color: var(--ac);
+      }
+      .ps h3 {
+        font-size: 30px;
+        margin: 8px 0 10px;
+      }
+      .ps p {
+        color: var(--mu);
+        margin: 0;
+        font-size: 15px;
+      }
+      /* tools */
+      .tl {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: var(--ln);
+        border: 1px solid var(--ln);
+        margin-top: 40px;
+      }
+      .tl div {
+        background: var(--bg2);
+        padding: 30px;
+      }
+      .tl i {
+        display: grid;
+        place-items: center;
+        width: 50px;
+        height: 50px;
+        border: 1px solid var(--ac);
+        color: var(--ac);
+        font: 700 19px var(--hd);
+        font-style: normal;
+        margin-bottom: 46px;
+      }
+      .tl h3 {
+        font-size: 22px;
+        margin-bottom: 8px;
+      }
+      .tl p {
+        margin: 0;
+        color: var(--mu);
+        font-size: 15px;
+      }
+      /* about / services */
+      .ab {
+        display: grid;
+        grid-template-columns: 5fr 6fr;
+        gap: 64px;
+        align-items: center;
+      }
+      .pt {
+        aspect-ratio: 4/5;
+        position: relative;
+        overflow: hidden;
+        background: var(--el);
+        border: 1px solid var(--ln);
+      }
+      .ab p {
+        color: #c9cbd1;
+        font-size: 19px;
+        max-width: 52ch;
+      }
+      .sv {
+        margin-top: 44px;
+        border-top: 1px solid var(--ln);
+      }
+      .sv details {
+        border-bottom: 1px solid var(--ln);
+      }
+      .sv summary {
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 22px 0;
+        cursor: pointer;
+        font: 500 clamp(20px, 2.6vw, 32px) var(--hd);
+        letter-spacing: -0.02em;
+      }
+      .sv summary::-webkit-details-marker {
+        display: none;
+      }
+      .sv summary::after {
+        content: "+";
+        color: var(--ac);
+      }
+      .sv details[open] summary::after {
+        content: "–";
+      }
+      .sv summary:hover {
+        color: var(--ac);
+      }
+      .sv details p {
+        margin: 0 0 24px;
+        color: var(--mu);
+        max-width: 70ch;
+      }
+      /* contact */
+      .ct {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+      }
+      form {
+        display: grid;
+        gap: 18px;
+      }
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--mu);
+      }
+      input,
+      select,
+      textarea {
+        background: var(--bg2);
+        border: 1px solid var(--ln);
+        color: var(--tx);
+        padding: 14px;
+        font: 400 16px var(--bd);
+        border-radius: 0;
+        width: 100%;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: 2px solid var(--ac);
+        border-color: var(--ac);
+      }
+      .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      #st {
+        min-height: 24px;
+        font-size: 15px;
+      }
+      #st.ok {
+        color: var(--ac);
+      }
+      #st.er {
+        color: #ff7a6b;
+      }
+      .lk {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+      }
+      .lk a {
+        color: var(--mu);
+      }
+      .lk a:hover {
+        color: var(--ac);
+      }
+      footer {
+        padding: 44px 0;
+        border-top: 1px solid var(--ln);
+      }
+      footer .w {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        align-items: center;
+        color: var(--mu);
+        font-size: 13px;
+      }
+      /* dialogs */
+      dialog {
+        background: var(--bg2);
+        color: var(--tx);
+        border: 1px solid var(--ln);
+        padding: 0;
+        max-width: min(1100px, 94vw);
+        width: 100%;
+        max-height: 92vh;
+        overflow: auto;
+      }
+      dialog::backdrop {
+        background: rgba(0, 0, 0, 0.88);
+      }
+      .dh {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--ln);
+        position: sticky;
+        top: 0;
+        background: var(--bg2);
+        z-index: 5;
+      }
+      .dh button {
+        background: none;
+        border: 1px solid var(--ln);
+        padding: 6px 14px;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .db {
+        padding: 28px;
+      }
+      .db h2 {
+        font-size: clamp(30px, 5vw, 64px);
+      }
+      .mf {
+        aspect-ratio: 16/9;
+        position: relative;
+        background: #000;
+        overflow: hidden;
+      }
+      .mf video {
+        width: 100%;
+        height: 100%;
+      }
+      .cs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px 48px;
+        margin-top: 32px;
+      }
+      .cs h3 {
+        font-size: 14px;
+        color: var(--ac);
+        margin-bottom: 6px;
+        letter-spacing: 0.1em;
+      }
+      .cs p {
+        margin: 0;
+        color: #c9cbd1;
+      }
+      .ba {
+        position: relative;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        margin-top: 12px;
+        user-select: none;
+        touch-action: none;
+        cursor: ew-resize;
+      }
+      .ba .scn {
+        filter: saturate(0.35) contrast(0.8) brightness(1.1);
+      }
+      .ba .g {
+        position: absolute;
+        inset: 0;
+        clip-path: inset(0 0 0 50%);
+      }
+      .ba .g .scn {
+        filter: none;
+      }
+      .ba .hd {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        background: var(--ac);
+      }
+      .ba input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: ew-resize;
+      }
+      #cur {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 14px;
+        height: 14px;
+        border: 1px solid var(--ac);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 99;
+        transition:
+          width 0.2s,
+          height 0.2s,
+          background 0.2s;
+        display: none;
+      }
+      #cur.h {
+        width: 44px;
+        height: 44px;
+        background: rgba(197, 255, 65, 0.12);
+      }
+      @media (pointer: fine) {
+        #cur {
+          display: block;
+        }
+      }
+      .rv {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.7s,
+          transform 0.7s;
+      }
+      .rv.in {
+        opacity: 1;
+        transform: none;
+      }
+      @media (max-width: 900px) {
+        .nl,
+        .nc {
+          display: none;
+        }
+        #mb {
+          display: block;
+        }
+        .nl.open {
+          display: flex;
+          position: absolute;
+          top: 68px;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: var(--bg);
+          padding: 20px 28px;
+          border-bottom: 1px solid var(--ln);
+        }
+        .hero .bg {
+          left: 0;
+          opacity: 0.55;
+        }
+        .vl {
+          display: none;
+        }
+        .pj,
+        .pj:nth-child(n) {
+          grid-column: span 12;
+        }
+        .pj .th {
+          aspect-ratio: 16/9 !important;
+        }
+        .ps,
+        .tl,
+        .ab,
+        .ct,
+        .cs,
+        .two {
+          grid-template-columns: 1fr;
+        }
+        .ab,
+        .ct {
+          gap: 36px;
+        }
+        section {
+          padding: 76px 0;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        * {
+          transition: none !important;
+        }
+        .rv {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cur" aria-hidden="true"></div>
+    <header id="hd">
+      <div class="w">
+        <nav aria-label="Main">
+          <a class="logo" href="#top">CINEMATIC<span class="ac">.</span></a>
+          <div class="nl" id="nl">
+            <a href="#work">Work</a><a href="#process">Process</a
+            ><a href="#about">About</a><a href="#services">Services</a
+            ><a href="#contact">Contact</a>
+          </div>
+          <a class="btn p nc" href="#contact">Let’s collaborate</a
+          ><button id="mb" aria-expanded="false" aria-controls="nl">
+            Menu
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="bg">
+          <div class="scn" data-s="film"></div>
+          <div class="grain"></div>
+        </div>
+        <span class="lb vl">Independent video editor</span>
+        <div class="w">
+          <span class="lb av"><i></i>Available for select projects</span>
+          <h1>I cut stories.<br />You <span class="ac">feel</span> them.</h1>
+          <p>
+            Video editor &amp; visual storyteller crafting cinematic
+            experiences, compelling narratives, and visuals that stay with you.
+          </p>
+          <div class="row">
+            <button class="btn p" id="reel">Watch showreel</button
+            ><a class="btn" href="#work">Explore my work</a>
+          </div>
+          <div class="sc lb">
+            <span>Scroll</span><span id="tc">00:00:00:00</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="work">
+        <div class="w">
+          <span class="lb">Selected work · Demo projects</span>
+          <h2 class="rv">Frames that<br />tell a story.</h2>
+          <div
+            class="fl"
+            id="fl"
+            role="group"
+            aria-label="Filter projects"
+          ></div>
+          <div class="gr" id="gr"></div>
+        </div>
+      </section>
+
+      <section id="process">
+        <div class="w">
+          <span class="lb">The creative process</span>
+          <h2 class="rv">More than cuts.<br />It’s storytelling.</h2>
+          <div class="ps">
+            <div class="rv">
+              <b>01</b>
+              <h3>Discover</h3>
+              <p>
+                Understand the brief, audience, creative direction and intended
+                emotional impact.
+              </p>
+            </div>
+            <div class="rv">
+              <b>02</b>
+              <h3>Shape</h3>
+              <p>
+                Select footage, establish pacing, structure the narrative and
+                build the initial edit.
+              </p>
+            </div>
+            <div class="rv">
+              <b>03</b>
+              <h3>Refine</h3>
+              <p>
+                Develop sound design, transitions, colour treatment, motion
+                graphics and visual rhythm.
+              </p>
+            </div>
+            <div class="rv">
+              <b>04</b>
+              <h3>Deliver</h3>
+              <p>
+                Polish the final sequence, check technical requirements and
+                export platform-ready files.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w" style="margin-top: 110px">
+          <span class="lb">Adobe Creative Cloud</span>
+          <h2 class="rv">My digital workshop</h2>
+          <div class="tl">
+            <div>
+              <i>Pr</i>
+              <h3>Premiere Pro</h3>
+              <p>
+                Primary editing, narrative structure, pacing, multicam and final
+                assembly.
+              </p>
+            </div>
+            <div>
+              <i>Ae</i>
+              <h3>After Effects</h3>
+              <p>
+                Motion graphics, compositing, visual effects, animated
+                typography and title sequences.
+              </p>
+            </div>
+            <div>
+              <i>Ps</i>
+              <h3>Photoshop</h3>
+              <p>
+                Thumbnail design, image manipulation, posters and visual assets.
+              </p>
+            </div>
+            <div>
+              <i>Au</i>
+              <h3>Audition</h3>
+              <p>
+                Audio clean-up, dialogue refinement, sound editing and
+                finishing.
+              </p>
+            </div>
+            <div>
+              <i>Me</i>
+              <h3>Media Encoder</h3>
+              <p>
+                Export workflows and delivery optimisation for every platform.
+              </p>
+            </div>
+            <div>
+              <i>Ai</i>
+              <h3>Illustrator</h3>
+              <p>
+                Vector graphics, logos and design assets for titles and
+                animation.
+              </p>
+            </div>
+          </div>
+          <p style="margin-top: 28px">
+            <a class="btn" href="#work">See the tools in action</a>
+          </p>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="w ab">
+          <div class="pt rv">
+            <div class="scn" data-s="portrait"></div>
+            <div class="grain"></div>
+            <span class="demo">Replace with portrait</span>
+          </div>
+          <div class="rv">
+            <span class="lb">About the editor</span>
+            <h2>The person behind the timeline.</h2>
+            <p>
+              I’m a video editor focused on transforming raw footage into
+              intentional visual experiences. From the rhythm of a precise cut
+              to the atmosphere created through sound and colour, I believe
+              every decision should serve the story.
+            </p>
+            <p class="lb" id="loc">
+              Location, years of experience and awards: add in the SITE config.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="services">
+        <div class="w">
+          <span class="lb">Services</span>
+          <h2 class="rv">What I can create</h2>
+          <div class="sv" id="sv"></div>
+        </div>
+      </section>
+
+      <section id="testi" hidden>
+        <div class="w">
+          <span class="lb">Client feedback</span>
+          <div id="tq"></div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="w ct">
+          <div>
+            <span class="lb">Project inquiry</span>
+            <h2 class="rv">Have a story?<br />Let’s make it move.</h2>
+            <p style="color: var(--mu); max-width: 40ch">
+              Share the project, the timeline and where it will be seen.
+            </p>
+            <div class="lk" id="lk"></div>
+          </div>
+          <form id="f" novalidate>
+            <div class="two">
+              <label
+                >Full name *<input
+                  name="name"
+                  required
+                  autocomplete="name" /></label
+              ><label
+                >Email *<input
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+              /></label>
+            </div>
+            <div class="two">
+              <label>Company or brand<input name="company" /></label>
+              <label
+                >Project type *<select name="type" required>
+                  <option value="">Select</option>
+                  <option>Cinematic film</option>
+                  <option>Commercial</option>
+                  <option>Music video</option>
+                  <option>Social media</option>
+                  <option>AMV or creative edit</option>
+                  <option>Motion graphics</option>
+                </select></label
+              >
+            </div>
+            <div class="two">
+              <label>Estimated budget<input name="budget" /></label
+              ><label>Delivery date<input name="date" type="date" /></label>
+            </div>
+            <label
+              >Project description *<textarea
+                name="msg"
+                rows="4"
+                required
+              ></textarea>
+            </label>
+            <label>Reference links<input name="refs" /></label>
+            <button class="btn p" id="sb" type="submit">
+              Let’s talk about your project
+            </button>
+            <div id="st" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="w">
+        <span>© <span id="yr"></span> <span id="nm">CINEMATIC</span></span
+        ><span class="lb">Every frame has a purpose.</span
+        ><a href="#top" class="lb">Back to top ↑</a>
+      </div>
+    </footer>
+
+    <dialog id="rd" aria-label="Showreel">
+      <div class="dh">
+        <span class="lb">Showreel</span><button data-x>Close</button>
+      </div>
+      <div class="mf" id="rm"></div>
+    </dialog>
+    <dialog id="pd" aria-labelledby="pt">
+      <div class="dh">
+        <span class="lb" id="pc"></span><button data-x>Back to work</button>
+      </div>
+      <div class="db" id="pb"></div>
+    </dialog>
+
+    <script>
+      /* ===== EDIT HERE: site config & project data ===== */
+      var SITE = {
+        name: "CINEMATIC",
+        email: "",
+        formEndpoint: "",
+        showreelSrc: "",
+        showreelPoster: "",
+        social: {
+          Instagram: "",
+          YouTube: "",
+          Vimeo: "",
+          LinkedIn: "",
+          Behance: "",
+        },
+      };
+      var TESTIMONIALS =
+        []; /* {quote,name,role,project} – section stays hidden until you add real feedback */
+      var PROJECTS = [
+        {
+          id: "p1",
+          title: "Untitled Film",
+          cat: "Cinematic film",
+          scene: "film",
+          year: 2026,
+          dur: "3:42",
+          tools: ["Premiere Pro", "Audition", "Lumetri"],
+          desc: "A quiet three-act short built from slow observational footage.",
+          credit: "",
+          video: "",
+          brief:
+            "Turn hours of unscripted footage into a short film with a clear emotional arc.",
+          approach:
+            "Selected moments by feeling rather than coverage, then built the structure around three beats.",
+          story:
+            "Silence carries as much weight as dialogue. Cuts land on breath, not on action.",
+          grade:
+            "Warm highlights, lifted shadows and restrained contrast, graded in Lumetri.",
+          ba: true,
+        },
+        {
+          id: "p2",
+          title: "Product Spot",
+          cat: "Brand commercial",
+          scene: "cup",
+          year: 2026,
+          dur: "0:45",
+          tools: ["Premiere Pro", "After Effects"],
+          desc: "Fast-cut launch spot with kinetic typography.",
+          credit: "",
+          video: "",
+          brief: "Sell one product in forty-five seconds.",
+          approach: "Cut on motion, with each shot under two seconds.",
+          story: "The hook lands in the first three seconds.",
+          grade: "Saturated, clean skin and product tones.",
+        },
+        {
+          id: "p3",
+          title: "Night Roads",
+          cat: "Music video",
+          scene: "road",
+          year: 2026,
+          dur: "4:10",
+          tools: ["Premiere Pro", "After Effects"],
+          desc: "Multicam performance edit synced to the beat.",
+          credit: "",
+          video: "",
+          brief: "Make a performance feel like a night drive.",
+          approach:
+            "Cut every angle to the kick and snare, with longer takes in the verses.",
+          story: "Rhythm leads and the story follows.",
+          grade: "Magenta and cyan split-tone.",
+        },
+        {
+          id: "p4",
+          title: "Campaign Cutdowns",
+          cat: "Social media",
+          scene: "phones",
+          year: 2026,
+          dur: "0:30",
+          tools: ["Premiere Pro", "Media Encoder"],
+          desc: "One master reframed for vertical, square and wide.",
+          credit: "",
+          video: "",
+          brief: "One campaign, every platform.",
+          approach:
+            "Built safe-area layouts first, then exported each ratio through Media Encoder.",
+          story: "Each format gets its own pacing.",
+          grade: "Consistent look across all versions.",
+        },
+        {
+          id: "p5",
+          title: "Skyline Remix",
+          cat: "Anime AMV",
+          scene: "amv",
+          year: 2026,
+          dur: "2:50",
+          tools: ["Premiere Pro", "After Effects"],
+          desc: "Beat-matched creative edit with glow and speed ramps.",
+          credit: "",
+          video: "",
+          brief: "Match intensity to the track.",
+          approach:
+            "Mapped drops to key frames, then added speed ramps and light effects.",
+          story: "Energy builds and releases with the music.",
+          grade: "Cool shadows with neon highlights.",
+        },
+        {
+          id: "p6",
+          title: "Title Sequence",
+          cat: "Motion graphics",
+          scene: "mg",
+          year: 2026,
+          dur: "0:20",
+          tools: ["After Effects", "Illustrator"],
+          desc: "Animated title built from vector shapes.",
+          credit: "",
+          video: "",
+          brief: "Open a series with a bold identity.",
+          approach:
+            "Drew shapes in Illustrator and animated them in After Effects.",
+          story: "Simple geometry, precise timing.",
+          grade: "Two-colour palette on black.",
+        },
+      ];
+      var SERVICES = [
+        [
+          "Cinematic video editing",
+          "Story-led edits for films, documentaries and brand stories.",
+          "Rough cut, fine cut, final export",
+        ],
+        [
+          "YouTube video editing",
+          "Pacing, graphics and sound for long-form channels.",
+          "Edited episode, thumbnail, captions",
+        ],
+        [
+          "Short-form reels and shorts",
+          "Vertical edits designed for retention.",
+          "9:16 masters, captions, cutdowns",
+        ],
+        [
+          "Commercial and promotional videos",
+          "Concise spots for products and launches.",
+          "Master, social versions",
+        ],
+        [
+          "Music video editing",
+          "Performance and narrative edits driven by rhythm.",
+          "Final cut, alt cuts, lyric video",
+        ],
+        [
+          "Anime AMVs and creative edits",
+          "Beat-matched edits with effects and speed ramps.",
+          "Final edit, 4K export",
+        ],
+        [
+          "Motion graphics and animated titles",
+          "Titles, lower thirds and animated logos.",
+          "Project file, alpha renders",
+        ],
+        [
+          "Colour correction and basic grading",
+          "Consistent, intentional looks.",
+          "Graded sequence, LUT on request",
+        ],
+        [
+          "Sound design and audio refinement",
+          "Dialogue clean-up, music balance and effects.",
+          "Mixed stereo master",
+        ],
+        [
+          "Social media content packages",
+          "Recurring batches for brands and creators.",
+          "Monthly delivery bundle",
+        ],
+      ];
+      /* ================================================== */
+      var S = {
+        film: '<defs><linearGradient id="d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14183a"/><stop offset=".6" stop-color="#c8693a"/><stop offset="1" stop-color="#f0bd68"/></linearGradient></defs><rect width="160" height="90" fill="url(#d)"/><circle cx="108" cy="54" r="11" fill="#ffe3a3"/><path d="M0 62L30 40 52 58 84 34 118 60 142 46 160 58V90H0Z" fill="#2a2147"/><path d="M0 74L40 58 74 72 110 56 160 74V90H0Z" fill="#120d22"/>',
+        cup: '<defs><linearGradient id="c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2a65a"/><stop offset="1" stop-color="#c93d1b"/></linearGradient></defs><rect width="160" height="90" fill="url(#c)"/><circle cx="80" cy="48" r="34" fill="#fff" opacity=".14"/><path d="M62 40H98L94 72Q80 78 66 72Z" fill="#fff6ea"/><path d="M98 46Q112 46 108 58Q104 64 96 62" fill="none" stroke="#fff6ea" stroke-width="4"/><path d="M62 40H98L97 46H63Z" fill="#6b3a1c"/>',
+        road: '<defs><linearGradient id="n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d0b24"/><stop offset=".55" stop-color="#5a1f6e"/><stop offset=".56" stop-color="#17112e"/><stop offset="1" stop-color="#07060f"/></linearGradient></defs><rect width="160" height="90" fill="url(#n)"/><circle cx="80" cy="42" r="14" fill="#ff4fa3"/><path d="M76 50H84L128 90H32Z" fill="#241a45"/><g stroke="#35e0ff" stroke-width="1.2"><path d="M76 50L32 90M84 50L128 90"/></g><g stroke="#ffd1f0" stroke-width="1.5"><path d="M80 54V58M80 64V70M80 76V84"/></g>',
+        phones:
+          '<defs><linearGradient id="f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2f73"/><stop offset="1" stop-color="#4d86e8"/></linearGradient></defs><rect width="160" height="90" fill="url(#f)"/><rect x="26" y="14" width="30" height="62" rx="4" fill="#0e1017"/><rect x="65" y="8" width="30" height="74" rx="4" fill="#f5f5f2"/><rect x="104" y="14" width="30" height="62" rx="4" fill="#0e1017"/><rect x="69" y="14" width="22" height="30" rx="2" fill="#C5FF41"/><rect x="30" y="20" width="22" height="22" rx="2" fill="#7a5cff"/><rect x="108" y="20" width="22" height="22" rx="2" fill="#2fb3a5"/>',
+        amv: '<defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a0b3a"/><stop offset="1" stop-color="#ff5fa0"/></linearGradient></defs><rect width="160" height="90" fill="url(#a)"/><circle cx="118" cy="26" r="14" fill="#fff4d6"/><g fill="#12091f"><rect x="8" y="46" width="16" height="44"/><rect x="28" y="34" width="14" height="56"/><rect x="46" y="52" width="18" height="38"/><rect x="68" y="28" width="12" height="62"/><rect x="84" y="48" width="20" height="42"/><rect x="108" y="40" width="16" height="50"/><rect x="128" y="54" width="22" height="36"/></g><g fill="#35e0ff"><rect x="31" y="42" width="3" height="3"/><rect x="71" y="36" width="3" height="3"/><rect x="112" y="50" width="3" height="3"/></g>',
+        mg: '<rect width="160" height="90" fill="#0b0c10"/><circle cx="62" cy="45" r="30" fill="none" stroke="#C5FF41" stroke-width="2"/><circle cx="62" cy="45" r="18" fill="none" stroke="#f5f5f2" stroke-width="1"/><rect x="82" y="30" width="52" height="30" fill="#C5FF41"/><path d="M20 78H140M20 12H140" stroke="#f5f5f2" stroke-width=".6"/><path d="M96 45L110 38V52Z" fill="#0b0c10"/>',
+        portrait:
+          '<defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a6a4a"/><stop offset="1" stop-color="#17191E"/></linearGradient></defs><rect width="160" height="90" fill="url(#p)"/><rect x="14" y="8" width="26" height="40" fill="#fff6dc" opacity=".5"/><circle cx="108" cy="36" r="13" fill="#0c0d10"/><path d="M78 90Q80 58 108 56Q136 58 138 90Z" fill="#0c0d10"/>',
+      };
+      function scn(el, k, slice) {
+        el.innerHTML =
+          '<svg viewBox="0 0 160 90" preserveAspectRatio="xMidYMid ' +
+          (slice === false ? "meet" : "slice") +
+          '" aria-hidden="true">' +
+          S[k] +
+          "</svg>";
+      }
+      function $(s, r) {
+        return (r || document).querySelector(s);
+      }
+      document.querySelectorAll(".scn").forEach(function (e) {
+        scn(e, e.dataset.s);
+      });
+      $("#yr").textContent = new Date().getFullYear();
+      /* gallery */
+      var cats = ["All"].concat(
+        PROJECTS.map(function (p) {
+          return p.cat;
+        }).filter(function (c, i, a) {
+          return a.indexOf(c) === i;
+        }),
+      );
+      var fl = $("#fl"),
+        gr = $("#gr");
+      cats.forEach(function (c, i) {
+        var b = document.createElement("button");
+        b.textContent = c;
+        b.setAttribute("aria-pressed", i === 0);
+        b.onclick = function () {
+          fl.querySelectorAll("button").forEach(function (x) {
+            x.setAttribute("aria-pressed", x === b);
+          });
+          gr.querySelectorAll(".pj").forEach(function (p) {
+            p.classList.toggle("hid", c !== "All" && p.dataset.c !== c);
+          });
+        };
+        fl.appendChild(b);
+      });
+      PROJECTS.forEach(function (p) {
+        var b = document.createElement("button");
+        b.className = "pj rv";
+        b.dataset.c = p.cat;
+        b.innerHTML =
+          '<div class="th"><div class="scn"></div><div class="grain"></div><div class="gl"></div><span class="demo">Demo</span><span class="tm">' +
+          p.dur +
+          "</span></div><h3>" +
+          p.title +
+          '</h3><div class="meta"><span>' +
+          p.cat +
+          "</span><span>" +
+          p.year +
+          "</span><span>" +
+          p.tools.join(" · ") +
+          '</span></div><p style="color:var(--mu);margin:8px 0 0;font-size:15px">' +
+          p.desc +
+          "</p>";
+        scn($(".scn", b), p.scene);
+        b.onmousemove = function (e) {
+          var r = $(".th", b).getBoundingClientRect();
+          b.style.setProperty("--x", e.clientX - r.left + "px");
+          $(".gl", b).style.setProperty("--x", e.clientX - r.left + "px");
+          $(".gl", b).style.setProperty("--y", e.clientY - r.top + "px");
+        };
+        b.onclick = function () {
+          openP(p);
+        };
+        gr.appendChild(b);
+      });
+      function openP(p) {
+        var rel = PROJECTS.filter(function (x) {
+          return x.id !== p.id;
+        }).slice(0, 3);
+        $("#pc").textContent = p.cat + " · " + p.year + " · Demo project";
+        $("#pb").innerHTML =
+          '<h2 id="pt">' +
+          p.title +
+          '</h2><div class="mf" id="pm"><div class="scn"></div><div class="grain"></div></div>' +
+          '<div class="cs"><div><h3>Overview</h3><p>' +
+          p.desc +
+          (p.credit ? " Credit: " + p.credit : "") +
+          "</p></div><div><h3>Creative brief</h3><p>" +
+          p.brief +
+          "</p></div><div><h3>Editing approach</h3><p>" +
+          p.approach +
+          "</p></div><div><h3>Storytelling decisions</h3><p>" +
+          p.story +
+          "</p></div><div><h3>Colour and treatment</h3><p>" +
+          p.grade +
+          "</p></div><div><h3>Software</h3><p>" +
+          p.tools.join(", ") +
+          "</p></div></div>" +
+          (p.ba
+            ? '<h3 style="font-size:14px;color:var(--ac);margin-top:32px;letter-spacing:.1em">Before and after grade</h3><div class="ba"><div class="scn"></div><div class="g"><div class="scn"></div></div><div class="hd"></div><input type="range" min="0" max="100" value="50" aria-label="Compare ungraded and graded"></div>'
+            : "") +
+          '<h3 style="font-size:14px;color:var(--ac);margin:36px 0 10px;letter-spacing:.1em">Related projects</h3><div class="row" id="rl"></div>';
+        var m = $("#pm");
+        scn($(".scn", m), p.scene);
+        if (p.video) {
+          m.innerHTML =
+            '<video controls preload="none" playsinline src="' +
+            p.video +
+            '"></video>';
+        }
+        if (p.ba) {
+          var ba = $(".ba"),
+            sc = ba.querySelectorAll(".scn");
+          sc.forEach(function (e) {
+            scn(e, p.scene);
+          });
+          $("input", ba).oninput = function (e) {
+            var v = e.target.value;
+            $(".g", ba).style.clipPath = "inset(0 0 0 " + v + "%)";
+            $(".hd", ba).style.left = v + "%";
+          };
+        }
+        rel.forEach(function (r) {
+          var a = document.createElement("button");
+          a.className = "btn";
+          a.textContent = r.title;
+          a.onclick = function () {
+            openP(r);
+            $("#pd").scrollTo(0, 0);
+          };
+          $("#rl").appendChild(a);
+        });
+        if (!$("#pd").open) $("#pd").showModal();
+      }
+      /* services */
+      $("#sv").innerHTML = SERVICES.map(function (s) {
+        return (
+          "<details><summary>" +
+          s[0] +
+          "</summary><p>" +
+          s[1] +
+          " Typical deliverables: " +
+          s[2] +
+          ".</p></details>"
+        );
+      }).join("");
+      /* links + testimonials */
+      var lk = $("#lk");
+      if (SITE.email) {
+        lk.innerHTML =
+          '<a href="mailto:' + SITE.email + '">' + SITE.email + "</a>";
+      }
+      Object.keys(SITE.social).forEach(function (k) {
+        if (SITE.social[k])
+          lk.insertAdjacentHTML(
+            "beforeend",
+            '<a href="' +
+              SITE.social[k] +
+              '" target="_blank" rel="noopener">' +
+              k +
+              "</a>",
+          );
+      });
+      if (!lk.children.length)
+        lk.innerHTML =
+          '<span class="lb">Add email and social links in the SITE config.</span>';
+      if (TESTIMONIALS.length) {
+        $("#testi").hidden = false;
+        $("#tq").innerHTML = TESTIMONIALS.map(function (t) {
+          return (
+            '<blockquote style="margin:32px 0"><p style="font:500 clamp(24px,3.6vw,48px)/1.15 var(--hd);letter-spacing:-.02em;max-width:26em">“' +
+            t.quote +
+            '”</p><cite class="lb">' +
+            t.name +
+            ", " +
+            t.role +
+            " · " +
+            t.project +
+            "</cite></blockquote>"
+          );
+        }).join("");
+      }
+      /* showreel */
+      $("#reel").onclick = function () {
+        var m = $("#rm");
+        if (SITE.showreelSrc) {
+          m.innerHTML =
+            '<video controls autoplay playsinline poster="' +
+            SITE.showreelPoster +
+            '" src="' +
+            SITE.showreelSrc +
+            '"></video>';
+        } else {
+          m.innerHTML =
+            '<div class="scn"></div><div class="grain"></div><div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;background:rgba(8,9,11,.6)"><div><h3 style="font-size:clamp(24px,4vw,44px)">Showreel coming soon</h3><p style="color:var(--mu)">Set <b>SITE.showreelSrc</b> to your MP4 to play it here.</p></div></div>';
+          scn($(".scn", m), "film");
+        }
+        $("#rd").showModal();
+      };
+      document.querySelectorAll("dialog").forEach(function (d) {
+        d.addEventListener("click", function (e) {
+          if (e.target === d || e.target.hasAttribute("data-x")) d.close();
+        });
+        d.addEventListener("close", function () {
+          var v = $("video", d);
+          if (v) v.pause();
+        });
+      });
+      /* form */
+      var f = $("#f"),
+        st = $("#st"),
+        sb = $("#sb"),
+        busy = false;
+      f.onsubmit = function (e) {
+        e.preventDefault();
+        if (busy) return;
+        st.className = "";
+        var d = new FormData(f),
+          o = {};
+        d.forEach(function (v, k) {
+          o[k] = v;
+        });
+        if (!o.name.trim() || !o.type || !o.msg.trim()) {
+          st.className = "er";
+          st.textContent =
+            "Please complete name, project type and description.";
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(o.email)) {
+          st.className = "er";
+          st.textContent = "Enter a valid email address.";
+          $("[name=email]").focus();
+          return;
+        }
+        if (!SITE.formEndpoint) {
+          st.className = "er";
+          st.textContent =
+            "The form is not connected yet. Add a form endpoint in SITE.formEndpoint, or email me directly" +
+            (SITE.email ? " at " + SITE.email : "") +
+            ".";
+          return;
+        }
+        busy = true;
+        sb.disabled = true;
+        sb.textContent = "Sending…";
+        fetch(SITE.formEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(o),
+        })
+          .then(function (r) {
+            if (!r.ok) throw 0;
+            st.className = "ok";
+            st.textContent = "Thanks. Your inquiry was sent.";
+            f.reset();
+          })
+          .catch(function () {
+            st.className = "er";
+            st.textContent =
+              "Sending failed. Please try again or email directly.";
+          })
+          .then(function () {
+            busy = false;
+            sb.disabled = false;
+            sb.textContent = "Let’s talk about your project";
+          });
+      };
+      /* nav, reveal, cursor, timecode */
+      var hd = $("#hd"),
+        nl = $("#nl"),
+        mb = $("#mb");
+      addEventListener(
+        "scroll",
+        function () {
+          hd.classList.toggle("s", scrollY > 40);
+        },
+        { passive: true },
+      );
+      mb.onclick = function () {
+        var o = nl.classList.toggle("open");
+        mb.setAttribute("aria-expanded", o);
+      };
+      nl.onclick = function () {
+        nl.classList.remove("open");
+        mb.setAttribute("aria-expanded", false);
+      };
+      var links = nl.querySelectorAll("a");
+      new IntersectionObserver(
+        function (es) {
+          es.forEach(function (e) {
+            if (e.isIntersecting)
+              links.forEach(function (a) {
+                a.classList.toggle(
+                  "on",
+                  a.getAttribute("href") === "#" + e.target.id,
+                );
+              });
+          });
+        },
+        { rootMargin: "-45% 0px -50% 0px" },
+      ).observe &&
+        document.querySelectorAll("section[id]").forEach(function (s) {});
+      var so = new IntersectionObserver(
+        function (es) {
+          es.forEach(function (e) {
+            if (e.isIntersecting)
+              links.forEach(function (a) {
+                a.classList.toggle(
+                  "on",
+                  a.getAttribute("href") === "#" + e.target.id,
+                );
+              });
+          });
+        },
+        { rootMargin: "-45% 0px -50% 0px" },
+      );
+      document.querySelectorAll("section[id]").forEach(function (s) {
+        so.observe(s);
+      });
+      var ro = new IntersectionObserver(
+        function (es) {
+          es.forEach(function (e) {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              ro.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.15 },
+      );
+      document.querySelectorAll(".rv").forEach(function (e) {
+        ro.observe(e);
+      });
+      var cur = $("#cur");
+      addEventListener("pointermove", function (e) {
+        cur.style.transform =
+          "translate(" + (e.clientX - 7) + "px," + (e.clientY - 7) + "px)";
+        cur.classList.toggle("h", !!e.target.closest("a,button,summary,.pj"));
+      });
+      var t0 = Date.now();
+      setInterval(function () {
+        var s = Math.floor((Date.now() - t0) / 1000),
+          fr = Math.floor((((Date.now() - t0) % 1000) / 1000) * 24);
+        $("#tc").textContent =
+          "00:" +
+          ("0" + (Math.floor(s / 60) % 60)).slice(-2) +
+          ":" +
+          ("0" + (s % 60)).slice(-2) +
+          ":" +
+          ("0" + fr).slice(-2);
+      }, 80);
+    </script>
+  </body>
+</html>
